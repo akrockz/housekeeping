@@ -1,0 +1,123 @@
+---
+
+- label: deploy-core-housekeeping-control
+  type: create_stack
+  params:
+    template: housekeeping-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      DeleteLogGroups: "True"
+      Days: "30"
+    accounts:
+      - "21321"  # Automation account
+      - "1232"  # Master account
+      - "1232"  # Compliance account
+    regions:
+      - ap-southeast-1  # Asia Pacific (Singapore)
+
+- label: deploy-core-housekeeping-dev-poc
+  type: create_stack
+  params:
+    template: housekeeping-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      DeleteLogGroups: "True"
+      Days: "30"
+    accounts:
+      - "1232"  # Dev1
+      - "1232"  # Dev2
+      - "2343"  # Dev3
+      - "2343"  # Dev4
+      - "43243"  # Dev5
+      - "43232"  # POC1
+      - "343"  # POC2
+      - "2433"  # POC3
+      - "2343"  # POC4
+      - "343"  # POC5
+    regions:
+      - ap-southeast-1  # Asia Pacific (Singapore)
+
+- label: deploy-core-housekeeping-nonprod
+  type: create_stack
+  params:
+    template: housekeeping-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      DeleteLogGroups: "True"
+      Days: "30"
+    accounts:
+      - "3432"  # nonprod-auto
+      - "2134"  # nonprod-semiauto
+      - "2343"  # nonprod-services
+    regions:
+      - ap-southeast-1  # Asia Pacific (Singapore)
+
+- label: deploy-core-housekeeping-prod
+  type: create_stack
+  params:
+    template: housekeeping-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      DeleteLogGroups: "True"
+      Days: "30"
+    accounts:
+      - "234"  # prod-auto
+      - "234"  # prod-semiauto
+      - "234"  # prod-services
+    regions:
+      - ap-southeast-1  # Asia Pacific (Singapore)
+
+- label: deploy-core-housekeeping-get-unrestricted-access-security-group-list
+  type: create_stack
+  params:
+    template: housekeeping-unrestricted-sg-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas-security-group-list"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      ListSgRole: "arn:aws:iam::2343:role/PipelineControl"
+      # Days: "30"
+    accounts:
+      - "234"  # Automation account
+      # - "123"  # Master account
+      # - "12342"  # Compliance account
+    regions:
+      - ap-southeast-1 #Asia Pacific singapore
+
+# depoly lambda in automation account to get unused volume details.
+- label: deploy-core-housekeeping-volumes-details-kriscloud
+  type: create_stack
+  params:
+    template: housekeeping-volume-details-lambdas.yaml
+    stack_name: "{{ core.Project }}-{{ core.App }}-lambdas-volume-details"
+    parameters:
+      ArtifactBucketName: "{{ core.ArtifactBucketName }}"
+      ArtifactKeyPrefix: "{{ core.ArtifactKeyPrefix }}"
+      AutomationBranchS3Prefix: "files/branch/{{ core.Portfolio }}/{{ core.App }}/{{ core.BranchShortName }}"
+      LambdaFunctionNamePrefix: "core-housekeeping"
+      ListSgRole: "arn:aws:iam::234:role/PipelineControl"
+      # Days: "30"
+    accounts:
+      - "2343"  # Automation account
+      # - "234"  # Master account
+      # - "234"  # Compliance account
+    regions:
+      - ap-southeast-1 #Asia Pacific singapore
